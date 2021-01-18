@@ -1,31 +1,32 @@
 from mcapi import *
 from org.bukkit.event.entity import PlayerDeathEvent
 from org.bukkit.event.player import PlayerRespawnEvent
+from org.bukkit.event.entity import EntityDamageEvent
+from org.bukkit.event.player import PlayerVelocityEvent
 
-
-nivel_fl = 0
+#beta-dev0.3
+def dano_mortal(e):
+    entidad = e.getEntity()
+    entidad_str = str(entidad)
     
-@asynchronous()
-def onKill(e):
-    global nivel_fl
-    jugador = e.getEntity()
-    nivel = jugador.getLevel()
-    nivel_fl = int(nivel)
+    if entidad_str[:11] == "CraftPlayer":
+        vida = float(entidad.getHealth())
+        vida_str = str(vida)
+        yell(vida_str)
+        if vida <= 1.5:
+            yell("el poder de los dioses te ha salvado")
+            entidad.setHealth(20.0)
+        
+
+def revisar_vida(e):
+    entidad2 = e.getPlayer()
     
-    nivel_bien = str(nivel)
-    yell(nivel_bien)
-    return nivel_fl
-
-@asynchronous()
-def respawn(e):
-    global nivel_fl
-    jugadorn = e.getPlayer()
     
-    jugadorn.setLevel(nivel_fl)
-    yell("respawn")
-    
+    vida2 = float(entidad2.getHealth())
+    if vida2 <= 1.5:
+        yell("el poder de los dioses te ha salvado")
+        entidad2.setHealth(20.0)
 
 
-listener = add_event_listener(PlayerDeathEvent, onKill)
-listener = add_event_listener(PlayerRespawnEvent, respawn)
-
+listener = add_event_listener(EntityDamageEvent, dano_mortal)
+listener2 = add_event_listener(PlayerVelocityEvent, revisar_vida)
