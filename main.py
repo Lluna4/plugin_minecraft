@@ -1,16 +1,33 @@
 import threading
+import datetime
 from mcapi import *
 from org.bukkit.event.entity import PlayerDeathEvent
 from org.bukkit.event.player import PlayerRespawnEvent
 from org.bukkit.event.entity import EntityDamageEvent
 from org.bukkit.event.player import PlayerVelocityEvent
 
-#beta-dev0.5
-vida_infinita = False
-def se_acabo():
-    global vida_infinita
-    vida_infinita = False
-    return vida_infinita
+#beta-dev0.6
+def conexion(e):
+    jugador = e.getPlayer()
+    jugador_str = str(jugador)
+    jugador_str2 = jugador_str + "!"
+    try:
+        with open(jugador_str, "r") as j_r:
+            dia = j_r.read()
+            dia_ahora = datetime.datetime.now()
+            if dia_ahora.day - dia > 0:
+                with open(jugador_str, "w") as j_w:
+                    j_w.write(dia_ahora.day)
+                with open(jugador_str2, "r") as jj_r:
+                    puntos_imortalidad = int(jj_r.read())
+
+                    with open(jugador_str2, "w") as jj_w:
+                        jj_w.write(puntos_imortalidad)
+    except IOError:
+
+
+
+
 
 def dano_mortal(e):
     global vida_infinita
