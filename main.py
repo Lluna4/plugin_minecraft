@@ -64,7 +64,7 @@ def dano_mortal(e):
                 entidad.setHealth(20.0)
                 lugar = entidad.getLocation()
                 entidad.spawnParticle(Particle.SOUL, lugar, 100)
-                entidad.playSound(lugar, Sound.BLOCK_ANVIL_LAND, 0.5, 1)
+                entidad.playSound(lugar, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1.5, 1)
                 inmortalidad_int -= 1
                 inmortalidad = str(inmortalidad_int)
                 with open(nombre, "w") as ttttt_w:
