@@ -6,12 +6,23 @@ from org.bukkit.event.player import PlayerRespawnEvent
 from org.bukkit.event.entity import EntityDamageEvent
 from org.bukkit.event.player import PlayerVelocityEvent
 from org.bukkit.event.player import PlayerJoinEvent
+from org.bukkit.scoreboard import DisplaySlot
 
-#beta-dev0.6
+#beta-dev0.7
+
+
+
+
+
+
 def conexion(e):
     jugador = e.getPlayer()
     jugador_str = str(jugador)
     jugador_str2 = jugador_str + "!"
+    scoreboard = Bukkit.getScoreboardManager()
+    sc = scoreboard.getNewScoreboard()
+    objetivo = sc.registerNewObjective("test", "minecraft.custom")
+    objetivo.setDisplaySlot(DisplaySlot.SIDEBAR)
     try:
         with open(jugador_str, "r") as j_r:
             dia = int(j_r.read())
@@ -24,6 +35,8 @@ def conexion(e):
                     cosa = int(jj_r.read())
                     puntos_imortalidadX = dia_ahora.day - dia
                     puntos_imortalidad = cosa + puntos_imortalidadX
+                    puntos_sc = objetivo.getScore(jugador)
+                    puntos_sc.setScore(puntos_imortalidad)
 
 
                     with open(jugador_str2, "w") as jj_w:
@@ -66,6 +79,8 @@ def dano_mortal(e):
                 entidad.spawnParticle(Particle.SOUL, lugar, 100)
                 entidad.playSound(lugar, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1.5, 1)
                 inmortalidad_int -= 1
+                puntos_sc = objetivo.getScore(entidad)
+                puntos_sc.setScore(inmortalidad_int)
                 inmortalidad = str(inmortalidad_int)
                 with open(nombre, "w") as ttttt_w:
                     ttttt_w.write(inmortalidad)
